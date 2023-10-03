@@ -1,0 +1,33 @@
+{% extends "AppCoder/padre.html" %}
+
+{% load static %}
+
+{% block titulo %}
+
+Bienvenidos a La Birreria!
+
+{% endblock %}
+
+{% block description %}
+
+Aca podrás disfrutar la mejor experiencia cervecera del mundo.
+
+<form action="/AppCoder/resultados/" method="GET">
+
+    <input type="text" name="producto" id="producto" style="font-size: 14px; width: 200px;">
+
+    <input type="submit" value="Buscar" style="font-size: 14px;">
+
+</form>
+
+<p style="font-size: 25px;">Estamos buscando el producto: {{producto}}</p>
+
+{% for producto_encontrado in nombre %}
+
+    <p style="font-size: 14px;">Nombre: {{producto_encontrado.nombre}}  ----- Marca:{{producto_encontrado.marca}}</p>
+
+
+{% endfor %}
+
+
+{% endblock %}

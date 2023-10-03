@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <p> Estamos buscando el producto: {{producto}}</p>
+
+    {% for producto_encontrado in nombre %}
+
+        <p>Nombre: {{producto_encontrado.nombre}}  ----- Marca:{{producto_encontrado.marca}}</p>
+
+
+    {% endfor %}
+
+</body>
+</html>
