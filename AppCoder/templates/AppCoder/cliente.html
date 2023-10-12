@@ -1,0 +1,33 @@
+{% extends "AppCoder/padre.html" %}
+
+{% load static %}
+
+{% block titulo %}
+
+Gracias por ser cliente !
+
+{% endblock %}
+
+{% block description %}
+
+No te vas a arrepentir.
+
+<form action="/AppCoder/buscar/" method="GET">
+
+    <input type="text" name="cliente" id="cliente" style="font-size: 14px; width: 200px;">
+
+    <input type="submit" value="Buscar" style="font-size: 14px;">
+
+
+</form>
+
+<p style="font-size: 25px;">Estamos buscando el cliente: {{cliente}}</p>
+
+{% for cliente_encontrado in nombre %}
+
+<p style="font-size: 14px;">Cliente: {{cliente_encontrado.cliente}}  ----- Usuario:{{usuario_encontrado.usuario}}</p>
+
+
+{% endfor %}
+
+{% endblock %}

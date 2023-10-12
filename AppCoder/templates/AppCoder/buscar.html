@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <p> Estamos buscando el cliente: {{cliente}}</p>
+
+    {% for cliente_encontrado in nombre %}
+
+        <p>Cliente: {{cliente_encontrado.cliente}}  ----- Usuario:{{usuario_encontrado.usuario}}</p>
+
+
+    {% endfor %}
+
+</body>
+</html>

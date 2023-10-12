@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <p> Estamos buscando la cerveceria: {{cerveceria}}</p>
+
+    {% for nombre_encontrado in nombre %}
+
+        <p>Nombre: {{nombre_encontrado.nombre}}  ----- Direccion:{{direccion_encontrado.direccion}}</p>
+
+
+    {% endfor %}
+
+</body>
+</html>
