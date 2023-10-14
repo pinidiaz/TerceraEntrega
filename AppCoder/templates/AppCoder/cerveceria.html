@@ -6,4 +6,21 @@
 
 Conoce sobre nosotros! 
 
+<form action="{% url 'BuscarCerveceria' %}" method="GET">
+
+    <input type="text" name="cerveceria" id="cerveceria" style="font-size: 14px; width: 200px;">
+
+    <input type="submit" value="Buscar" style="font-size: 14px;">
+
+
+</form>
+
+<p style="font-size: 25px;">Estamos buscando la cerveceria {{cerveceria}}</p>
+
+{% for nombre_encontrada in nombre %}
+
+<p style="font-size: 14px;">Nombre: {{nombre_encontrado.nombre}}  ----- Direccion:{{direccion_encontrado.direccion}}  </p>
+
+{% endfor %}
+
 {% endblock %}

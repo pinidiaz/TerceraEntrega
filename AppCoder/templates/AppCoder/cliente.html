@@ -18,14 +18,14 @@ No te vas a arrepentir.
 
     <input type="submit" value="Buscar" style="font-size: 14px;">
 
-
+    
 </form>
 
 <p style="font-size: 25px;">Estamos buscando el cliente: {{cliente}}</p>
 
-{% for cliente_encontrado in nombre %}
+{% for cliente_encontrado in usuario %}
 
-<p style="font-size: 14px;">Cliente: {{cliente_encontrado.cliente}}  ----- Usuario:{{usuario_encontrado.usuario}}</p>
+<p style="font-size: 14px;">Cliente: {{cliente_encontrado.usuario}}  ----- Usuario:{{cliente_encontrado.cliente}}</p>
 
 
 {% endfor %}

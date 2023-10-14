@@ -13,6 +13,9 @@ urlpatterns = [
     path("cerveceriaFormulario/", cerveceriaFormulario, name="FormularioCerveceria"),
     path("buscarCliente/", busquedaCliente, name="BuscarCliente"),
     path("buscar/", buscar, name="BuscarCliente"),
+    path("buscar2/", buscar2, name="BuscarCerveceria"),
+    path("login", inicioSesion, name="Login"),
+    path("register", registro, name="Registro"),
 
 
     #CRUD DE CLIENTES
@@ -20,5 +23,11 @@ urlpatterns = [
     path("crearClientes/", crearClientes, name="ClientesCrear"),
     path("eliminarClientes/<clienteUsuario>/", eliminarClientes, name="EliminarClientes"),
     path("editarClientes/<clienteUsuario>/", editarClientes, name="EditarClientes"),
+
+
+    #CRUD DE PRODUCTOS
+    path("producto/list", ListaProducto.as_view(), name="ProductosLista"),
+    path("producto/<int:pk>", DetalleProducto.as_view(), name="ProductosDetalle"),
+
 
 ] 

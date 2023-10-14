@@ -1,0 +1,28 @@
+{% extends "AppCoder/padre.html" %}
+
+{% load static %}
+
+{% block titulo %}
+Bienvenidos a La Birreria!
+{% endblock %}
+
+{% block description %}
+Aca podrás disfrutar de la mejor experiencia cervecera del mundo.
+</div> 
+{% if mensaje_error %}
+<div class="error-message">
+    {{ mensaje_error }}
+</div>
+{% endif %}
+<form action="" method="POST">
+    {% csrf_token %}
+    <style>
+        input#id_username, input#id_password {font-size: 12px;}
+        label[for="id_username"], label[for="id_password"] {font-size: 12px;}
+        button[type="submit"] {font-size: 12px;}
+        input#id_username, input#id_password {width: 200px;height: 25px;}
+    </style>
+    {{ formulario.as_p }}
+    <button type="submit">Iniciar Sesión</button>
+</form>
+{% endblock %}

@@ -2,10 +2,52 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from AppCoder.forms import ProductoFormulario, ClienteFormulario, CerveceriaFormulario, Clientes1Formulario
 from AppCoder.models import Cerveceria, Producto, Cliente 
-
- 
+from django.views.generic import ListView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth import login, authenticate
+from django.shortcuts import render
 
 # Create your views here.
+
+def inicioSesion(request):
+    mensaje_error = ""  
+
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            usuario = form.cleaned_data.get("username")
+            contra = form.cleaned_data.get("password")
+            user = authenticate(username=usuario, password=contra)
+            if user is not None:
+                login(request, user)
+                return render(request, "AppCoder/inicio.html", {"mensaje": f"Bienvenido, {user}"})
+            else:
+                mensaje_error = "Los datos ingresados son incorrectos. Por favor, inténtalo de nuevo."  
+            mensaje_error = "Por favor, ingresa un nombre de usuario y contraseña válidos."  
+    else:
+        form = AuthenticationForm()
+
+    return render(request, "AppCoder/login.html", {"formulario": form, "mensaje_error": mensaje_error})
+    
+def registro(request):
+    if request.method=="POST":
+
+       form = UserCreationForm(request.POST)
+
+       if form.is_valid():
+
+        username = form.cleaned_data["username"]
+        form.save()
+        return render(request, "AppCoder/inicio.html", {"mensaje": "Usuario creado."})
+    
+    else:
+        form = UserCreationForm()
+
+    return render(request, "AppCoder/inicio.html", {"formulario":form})
+
+
 
 def inicio(request):
     return render(request,"AppCoder/inicio.html")
@@ -151,16 +193,16 @@ def busquedaCerveceria(request):
 def buscar2(request):
 
     if "cerveceria" in request.GET:
-        
-        nombre = request.GET["nombre"]
+        print("buscando")
+        cerveceria = request.GET["cerveceria"]
         nombre_resultados = Cerveceria.objects.filter(nombre__iexact=cerveceria)
 
-        return render(request, "AppCoder/cerveceria.html", {"cerveceria":cerveceria, "nombre":nombre_resultados})
-    
+        return render(request, "AppCoder/cerveceria.html", {"cerveceria": cerveceria, "nombre": nombre_resultados})
+
     else:
         respuesta = "No se encuentran datos."
-    
-    return HttpResponse (respuesta)
+
+    return HttpResponse(respuesta)
 
 
 
@@ -206,27 +248,56 @@ def eliminarClientes(request,clienteUsuario):
     return render(request, "AppCoder/leerClientes.html", contexto)
 
 
-def editarClientes(request,clienteUsuario):
+def editarClientes(request, clienteUsuario):
     cliente = Cliente.objects.get(usuario=clienteUsuario)
 
     if request.method == "POST":
-       
-       if formulario2.is_valid():
 
+        formulario2 = Clientes1Formulario(
+            request.POST, initial={"usuario": cliente.usuario, "cliente": cliente.cliente})
+
+        if formulario2.is_valid():
             info = formulario2.cleaned_data
-
             cliente.cliente = info["cliente"]
             cliente.usuario = info["usuario"]
-        
             cliente.save()
-
             return render(request, "AppCoder/inicio.html")
-    
+
     else:
+        formulario2 = Clientes1Formulario(
+            initial={"usuario": cliente.usuario, "cliente": cliente.cliente})
 
-        formulario2 = Clientes1Formulario(inital={"usuario":cliente.usuario, "cliente":cliente.cliente})
+    return render(request, "AppCoder/editarClientes.html", {"form2": formulario2, "cliente": clienteUsuario})
 
-    return render(request, "AppCoder/editarFormulario.html",{"form2":formulario2,"cliente":clienteUsuario})
+
+##---------------------------
+
+class ListaProducto (ListView):
+
+    model = Producto
+
+class DetalleProducto (DetailView):
+
+    model = Producto
+
+class CrearProducto (CreateView):
+
+    model = Producto
+    success_url = "/AppCoder/producto/list"
+    fields = ["nombre", "marca", "precio"]
+
+class ActualizarProducto (UpdateView):
+
+    model = Producto
+    success_url = "/AppCoder/producto/list"
+    fields = ["nombre", "marca", "precio"]
+
+class BorrarProducto (DeleteView):
+    model = Producto
+    success_url = "/AppCoder/producto/list"   
+
+
+
 
 
 

@@ -20,3 +20,4 @@ class Clientes1Formulario(forms.Form):
 
     usuario=forms.CharField()
     cliente=forms.CharField()   
+

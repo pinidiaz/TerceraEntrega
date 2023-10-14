@@ -9,9 +9,10 @@
 
     <p> Estamos buscando la cerveceria: {{cerveceria}}</p>
 
-    {% for nombre_encontrado in nombre %}
+    {% for cerveceria_encontrada in nombre %}
 
-        <p>Nombre: {{nombre_encontrado.nombre}}  ----- Direccion:{{direccion_encontrado.direccion}}</p>
+        <p>Nombre: {{nombre_encontrado.nombre}}  ----- Ciudad:{{ciudad_encontrado.ciudad}} ----- 
+            Direccion:{{direccion_encontrado.direccion}}</p>
 
 
     {% endfor %}

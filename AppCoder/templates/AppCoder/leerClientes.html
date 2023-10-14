@@ -12,17 +12,21 @@
     <p>Usuario: {{cliente.usuario}}</p>
     <p>Cliente: {{cliente.cliente}}</p>
 
-    <buttom>
+    <button>
         <a href="{% url 'EliminarClientes' cliente.usuario %}"> Eliminar Cliente </a>
-    </buttom>
-
-    <buttom>
+    </button>
+   
+    <button>
     <a href="{% url 'EditarClientes' cliente.usuario %}"> Editar Cliente </a>
-    </buttom>
-    ----------------------------
+    </button>
+    -----------
 
-    
     {% endfor %}
+
+    <br>
+    
+    <a href="{% url 'ClientesCrear' %}"> Crear Cliente </a>
+    
 
 </body>
 </html>
