@@ -1,4 +1,6 @@
 from django.db import models
+from PIL import Image
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Cerveceria(models.Model):
@@ -27,4 +29,16 @@ class Cliente(models.Model):
     usuario = models.CharField(max_length=60, unique=True)
     cliente = models.CharField(max_length=60)
 
+class Avatar(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to="avatares", null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        super(Avatar, self).save(*args, **kwargs)
+
+        if self.imagen:
+            img = Image.open(self.imagen.path)
+            max_size = (100, 100)  
+            img.thumbnail(max_size)
+            img.save(self.imagen.path)
 

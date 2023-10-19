@@ -1,13 +1,15 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from AppCoder.forms import ProductoFormulario, ClienteFormulario, CerveceriaFormulario, Clientes1Formulario
+from AppCoder.forms import *
 from AppCoder.models import Cerveceria, Producto, Cliente 
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, authenticate
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -34,20 +36,43 @@ def inicioSesion(request):
 def registro(request):
     if request.method=="POST":
 
-       form = UserCreationForm(request.POST)
+       form = UsuarioRegistro(request.POST)
 
        if form.is_valid():
 
         username = form.cleaned_data["username"]
         form.save()
-        return render(request, "AppCoder/inicio.html", {"mensaje": "Usuario creado."})
+        return redirect("Inicio")
     
     else:
-        form = UserCreationForm()
+        form = UsuarioRegistro()
 
-    return render(request, "AppCoder/inicio.html", {"formulario":form})
+    return render(request, "AppCoder/registro.html", {"formulario":form})
 
+@login_required
+def editarUsuario(request):
+    usuario = request.user
 
+    if request.method == "POST":
+        form = FormularioEditar(request.POST)
+
+        if form.is_valid():
+            info = form.cleaned_data
+            usuario.email = info["email"]
+            usuario.set_password(info["password1"])
+            usuario.first_name = info["first_name"]
+            usuario.last_name = info["last_name"]
+            usuario.save()
+            return render(request, "AppCoder/inicio.html")
+    else:
+        form = FormularioEditar(initial={
+            "email": usuario.email,
+            "first_name": usuario.first_name,
+            "last_name": usuario.last_name,
+        })
+    
+    return render(request, "AppCoder/editarPerfil.html", {"formulario": form, "usuario": usuario})
+#-------------------------------
 
 def inicio(request):
     return render(request,"AppCoder/inicio.html")
@@ -137,13 +162,13 @@ def clienteFormulario(request):
 
     return render(request, "AppCoder/clientes1Formulario.html",{"form2":formulario2 })
 
-
+@login_required
 def busquedaCliente(request):
 
     return render(request, "AppCoder/inicio.html")
 
 
-
+@login_required
 def buscar(request):
 
     if "cliente" in request.GET:
@@ -183,7 +208,7 @@ def cerveceriaFormulario(request):
 
     return render(request, "AppCoder/cerveceriaFormulario.html",{"form3":formulario3})
 
-
+@login_required
 def busquedaCerveceria(request):
 
     return render(request, "AppCoder/inicio.html")
@@ -270,29 +295,45 @@ def editarClientes(request, clienteUsuario):
     return render(request, "AppCoder/editarClientes.html", {"form2": formulario2, "cliente": clienteUsuario})
 
 
-##---------------------------
+@login_required
+def agregarAvatar(request):
+    if request.method == "POST":
+        form = AvatarFormulario(request.POST, request.FILES)
 
-class ListaProducto (ListView):
+        if form.is_valid():
+            usuarioActual = User.objects.get(username=request.user)
+            avatar = Avatar(usuario=usuarioActual, imagen=form.cleaned_data["imagen"])
+            avatar.save()
+            return render(request, "AppCoder/inicio.html")
+    else:
+        form = AvatarFormulario()
+
+    return render(request, "AppCoder/agregarAvatar.html", {"formulario": form})
+    
+    
+    ##---------------------------
+
+class ListaProducto (LoginRequiredMixin, ListView):
 
     model = Producto
 
-class DetalleProducto (DetailView):
+class DetalleProducto (LoginRequiredMixin, DetailView):
 
     model = Producto
 
-class CrearProducto (CreateView):
+class CrearProducto (LoginRequiredMixin, CreateView):
 
     model = Producto
     success_url = "/AppCoder/producto/list"
     fields = ["nombre", "marca", "precio"]
 
-class ActualizarProducto (UpdateView):
+class ActualizarProducto (LoginRequiredMixin, UpdateView):
 
     model = Producto
     success_url = "/AppCoder/producto/list"
     fields = ["nombre", "marca", "precio"]
 
-class BorrarProducto (DeleteView):
+class BorrarProducto (LoginRequiredMixin, DeleteView):
     model = Producto
     success_url = "/AppCoder/producto/list"   
 

@@ -7,3 +7,4 @@ from AppCoder.models import *
 admin.site.register(Cerveceria)
 admin.site.register(Cliente)
 admin.site.register(Producto)
+admin.site.register(Avatar)

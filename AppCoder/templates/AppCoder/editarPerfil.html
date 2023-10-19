@@ -1,0 +1,25 @@
+{% extends "AppCoder/padre.html" %}
+{% load static %}
+
+{% block titulo %}
+Editar Usuario.
+{% endblock %}
+
+{% block description %}
+<div style="text-align: center;">
+    <form action="" method="POST" style="font-size: 14px; display: inline-block; text-align: left; margin: 0 auto;">
+        {% csrf_token %}
+        {{ formulario.as_p }}
+        <button type="submit" style="font-size: 12px; display: block; margin: 0 auto;">Editar</button>
+    </form>
+</div>
+
+<style>
+    .rectangulo {
+        width: 20px;
+        height: 20px;
+        background-color: #3498db;
+        display: inline-block;
+    }
+</style>
+{% endblock %}

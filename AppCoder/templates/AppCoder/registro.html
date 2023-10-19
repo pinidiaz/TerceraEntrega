@@ -1,19 +1,28 @@
 {% extends "AppCoder/padre.html" %}
-
 {% load static %}
 
 {% block titulo %}
-Aca podras registrarte !
+Aca podrás registrarte !
 {% endblock %}
 
 {% block description %}
+<style>
+    form {
+        font-size: 14px;
+    }
 
-<form action="" method="POST"> {% csrf_token %}
-  
+    input[type="text"], input[type="password"], button {
+        font-size: 14px;
+    }
+</style>
+
+<form action="" method="POST">
+    {% csrf_token %}
+
     {{ formulario.as_p }}
 
     <button type="submit">Registrarte</button>
-
 </form>
-
+</div>
 {% endblock %}
+
