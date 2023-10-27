@@ -34,5 +34,10 @@ urlpatterns = [
     path("producto/list", ListaProducto.as_view(), name="ProductosLista"),
     path("producto/<int:pk>", DetalleProducto.as_view(), name="ProductosDetalle"),
 
+    path("leerProducto/", leerProducto, name="ProdcutoLeer"),
+    path("crearProducto/", crearProducto, name="ProductoCrear"),
+    path("eliminarProducto/<productoNombre>/", eliminarProducto, name="EliminarProducto"),
+    path("editarProducto/<productoNombre>/", editarProducto, name="EditarProducto"),
 
-] 
+]   
+

@@ -8,6 +8,7 @@ class ProductoFormulario(forms.Form):
 
     nombre=forms.CharField()
     marca=forms.CharField()
+    precio=forms.DecimalField(max_digits=10, decimal_places=2)
 
 class ClienteFormulario(forms.Form):
 

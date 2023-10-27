@@ -11,6 +11,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
+
 # Create your views here.
 
 def inicioSesion(request):
@@ -136,6 +137,76 @@ def resultados(request):
         respuesta = "No se encuentran datos."
     
     return HttpResponse (respuesta)
+
+
+def leerProducto(request):
+    
+    producto = Producto.objects.all()
+    contexto ={"product": producto}
+
+    return render(request, "AppCoder/leerProducto.html", contexto)
+
+
+def crearProducto(request):
+    if request.method == "POST":
+        miFormulario = ProductoFormulario(request.POST)
+
+        if miFormulario.is_valid():
+
+            info = miFormulario.cleaned_data
+
+            nombre = info["nombre"]
+            marca = info["marca"]
+            precio = info["precio"]
+
+            producto = Producto(nombre=nombre, marca=marca, precio=precio)
+
+            producto.save()
+
+            producto.save()
+
+            return render(request, "AppCoder/inicio.html")
+        
+    else: 
+        miFormulario = ProductoFormulario()
+    
+    return render(request, "AppCoder/productoFormulario.html", {"miFormulario":miFormulario})
+
+
+def eliminarProducto(request,productoNombre):
+
+    producto = Producto.objects.get(nombre=productoNombre)
+    producto.delete()
+
+    producto = Producto.objects.all()
+    contexto = {"product":producto}
+
+    return render(request, "AppCoder/leerProducto.html",contexto)
+
+def editarProducto(request,productoNombre):
+    producto = Producto.objects.get(nombre=productoNombre)
+
+    if request.method == "POST":
+        miFormulario = ProductoFormulario(request.POST)
+
+        if miFormulario.is_valid():
+
+            info = miFormulario.cleaned_data
+
+            producto.nombre = info["nombre"]
+            producto.marca = info["marca"]
+            producto.precio = info["precio"]
+
+            producto.save()
+
+
+            return render(request, "AppCoder/inicio.html")
+        
+    else: 
+        miFormulario = ProductoFormulario(initial={"nombre":producto.nombre, "marca":producto.marca, 
+        "precio":producto.precio})
+    
+    return render(request, "AppCoder/editarProducto.html", {"miFormulario":miFormulario, "nombre":productoNombre})
 
 
 
@@ -336,8 +407,6 @@ class ActualizarProducto (LoginRequiredMixin, UpdateView):
 class BorrarProducto (LoginRequiredMixin, DeleteView):
     model = Producto
     success_url = "/AppCoder/producto/list"   
-
-
 
 
 
